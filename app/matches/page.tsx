@@ -9,57 +9,59 @@ function MatchCard({ match }: { match: any }) {
   const isCompleted = match.status === "completed"
 
   return (
-    <Card className="hover:shadow-lg transition-shadow">
-      <CardContent className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">
-              {new Date(match.match_date).toLocaleDateString("fr-FR")}
-            </span>
-            <Clock className="h-4 w-4 text-muted-foreground ml-2" />
-            <span className="text-sm text-muted-foreground">{match.match_time}</span>
-          </div>
-          <Badge variant={isCompleted ? "default" : "secondary"}>{isCompleted ? "Terminé" : "Programmé"}</Badge>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <div className="text-center">
-              <div className="font-semibold text-lg">{match.player1?.name}</div>
-              {isCompleted && match.sets && (
-                <div className="text-2xl font-bold text-primary mt-1">
-                  {match.sets.filter((s: any) => s.player1_score > s.player2_score).length}
-                </div>
-              )}
+    <Link href={`/matches/${match.id}`}>
+      <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">
+                {new Date(match.match_date).toLocaleDateString("fr-FR")}
+              </span>
+              <Clock className="h-4 w-4 text-muted-foreground ml-2" />
+              <span className="text-sm text-muted-foreground">{match.match_time}</span>
             </div>
-
-            <div className="text-muted-foreground font-medium text-lg">VS</div>
-
-            <div className="text-center">
-              <div className="font-semibold text-lg">{match.player2?.name}</div>
-              {isCompleted && match.sets && (
-                <div className="text-2xl font-bold text-primary mt-1">
-                  {match.sets.filter((s: any) => s.player2_score > s.player1_score).length}
-                </div>
-              )}
-            </div>
+            <Badge variant={isCompleted ? "default" : "secondary"}>{isCompleted ? "Terminé" : "Programmé"}</Badge>
           </div>
 
-          {isCompleted && match.sets && match.sets.length > 0 && (
-            <div className="text-right">
-              <div className="space-y-1">
-                {match.sets.map((set: any, index: number) => (
-                  <div key={index} className="text-xs text-muted-foreground">
-                    Set {set.set_number}: {set.player1_score}-{set.player2_score}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-6">
+              <div className="text-center">
+                <div className="font-semibold text-lg">{match.player1?.name}</div>
+                {isCompleted && match.sets && (
+                  <div className="text-2xl font-bold text-primary mt-1">
+                    {match.sets.filter((s: any) => s.player1_score > s.player2_score).length}
                   </div>
-                ))}
+                )}
+              </div>
+
+              <div className="text-muted-foreground font-medium text-lg">VS</div>
+
+              <div className="text-center">
+                <div className="font-semibold text-lg">{match.player2?.name}</div>
+                {isCompleted && match.sets && (
+                  <div className="text-2xl font-bold text-primary mt-1">
+                    {match.sets.filter((s: any) => s.player2_score > s.player1_score).length}
+                  </div>
+                )}
               </div>
             </div>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+
+            {isCompleted && match.sets && match.sets.length > 0 && (
+              <div className="text-right">
+                <div className="space-y-1">
+                  {match.sets.map((set: any, index: number) => (
+                    <div key={index} className="text-xs text-muted-foreground">
+                      Set {set.set_number}: {set.player1_score}-{set.player2_score}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
   )
 }
 
