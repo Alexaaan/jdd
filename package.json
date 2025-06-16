@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "npm run build:db",
+    "build:db": "node -e \"console.log('DB will be initialized on first use')\""
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.1.2",
@@ -34,7 +36,6 @@
     "@radix-ui/react-toggle": "^1.0.3",
     "@radix-ui/react-toggle-group": "^1.0.4",
     "@radix-ui/react-tooltip": "^1.0.7",
-    "@supabase/supabase-js": "^2.50.0",
     "better-sqlite3": "^9.2.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

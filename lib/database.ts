@@ -1,5 +1,6 @@
-// Supprimer tous les imports de better-sqlite3 et remplacer par des Server Actions
-// Ce fichier ne contiendra que les types et les fonctions utilitaires
+// Ce fichier contient uniquement les types TypeScript
+// Toutes les fonctions de base de données sont dans database-server.ts
+// et accessibles via les Server Actions dans actions.ts
 
 export interface Player {
   id: number

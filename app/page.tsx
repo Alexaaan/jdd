@@ -4,11 +4,11 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Trophy, Users, Calendar, TrendingUp, Plus } from "lucide-react"
 import Link from "next/link"
-// Remplacer les imports de database par database-server
-import { getPlayerStats, getMatches } from "@/lib/database-server"
+// Remplacer l'import par les actions
+import { getPlayerStatsAction, getMatchesAction } from "@/lib/actions"
 
 async function RankingTable() {
-  const playerStats = await getPlayerStats()
+  const playerStats = await getPlayerStatsAction()
 
   if (playerStats.length === 0) {
     return (
@@ -83,7 +83,7 @@ async function RankingTable() {
 }
 
 async function RecentMatches() {
-  const matches = await getMatches(5)
+  const matches = await getMatchesAction(5)
 
   if (matches.length === 0) {
     return (
@@ -138,9 +138,9 @@ export default function HomePage() {
               </div>
               <div>
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  B League
+                  King League
                 </h1>
-                <p className="text-muted-foreground">Championnat de LJD</p>
+                <p className="text-muted-foreground">Championnat de Ping-Pong</p>
               </div>
             </div>
             <nav className="flex items-center gap-3">
@@ -282,10 +282,10 @@ export default function HomePage() {
 
 async function StatsCard({ type }: { type: "players" | "matches" }) {
   if (type === "players") {
-    const stats = await getPlayerStats()
+    const stats = await getPlayerStatsAction()
     return <div className="text-2xl font-bold text-blue-600">{stats.length}</div>
   } else {
-    const matches = await getMatches()
+    const matches = await getMatchesAction()
     return <div className="text-2xl font-bold text-green-600">{matches.length}</div>
   }
 }

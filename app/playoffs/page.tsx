@@ -3,10 +3,11 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Trophy, Crown, Medal } from "lucide-react"
 import Link from "next/link"
-import { getPlayerStats } from "@/lib/database-server"
+// Remplacer l'import
+import { getPlayerStatsAction } from "@/lib/actions"
 
 export default async function PlayoffsPage() {
-  const playerStats = await getPlayerStats()
+  const playerStats = await getPlayerStatsAction()
   const qualifiedPlayers = playerStats.slice(0, 4) // Top 4
 
   return (

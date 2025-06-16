@@ -1,3 +1,4 @@
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
@@ -11,6 +12,8 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ["better-sqlite3"],
   },
+  // Configuration pour Vercel
+  output: "standalone",
 }
 
 module.exports = nextConfig

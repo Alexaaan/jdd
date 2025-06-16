@@ -9,11 +9,28 @@ import {
   getMatches,
   createMatch,
   updateMatchScores,
+  initializeDatabase,
 } from "./database-server"
+
+// Initialiser la base de données au démarrage
+let dbInitialized = false
+
+async function ensureDbInitialized() {
+  if (!dbInitialized) {
+    try {
+      await initializeDatabase()
+      dbInitialized = true
+      console.log("✅ Base de données initialisée")
+    } catch (error) {
+      console.error("❌ Erreur initialisation DB:", error)
+    }
+  }
+}
 
 // Actions pour les joueurs
 export async function getPlayersAction() {
   try {
+    await ensureDbInitialized()
     return await getPlayers()
   } catch (error) {
     console.error("Erreur getPlayersAction:", error)
@@ -29,9 +46,10 @@ export async function createPlayerAction(formData: FormData) {
     throw new Error("Le nom est requis")
   }
 
-  console.log("Tentative de création du joueur:", name)
+  await ensureDbInitialized()
 
   try {
+    console.log("Tentative de création du joueur:", name)
     await createPlayer(name.trim(), email?.trim() || undefined)
     console.log("Joueur créé avec succès")
   } catch (error) {
@@ -49,6 +67,7 @@ export async function createPlayerAction(formData: FormData) {
 // Actions pour les statistiques
 export async function getPlayerStatsAction(seasonId?: number) {
   try {
+    await ensureDbInitialized()
     return await getPlayerStats(seasonId)
   } catch (error) {
     console.error("Erreur getPlayerStatsAction:", error)
@@ -59,6 +78,7 @@ export async function getPlayerStatsAction(seasonId?: number) {
 // Actions pour les matchs
 export async function getMatchesAction(limit?: number) {
   try {
+    await ensureDbInitialized()
     return await getMatches(limit)
   } catch (error) {
     console.error("Erreur getMatchesAction:", error)
@@ -68,6 +88,7 @@ export async function getMatchesAction(limit?: number) {
 
 export async function getMatchByIdAction(id: number) {
   try {
+    await ensureDbInitialized()
     const matches = await getMatches()
     return matches.find((m) => m.id === id) || null
   } catch (error) {
@@ -84,9 +105,10 @@ export async function createMatchAction(matchData: {
   format: "best-of-3" | "best-of-5"
   sets: { set_number: number; player1_score: number; player2_score: number }[]
 }) {
-  console.log("Tentative de création du match:", matchData)
+  await ensureDbInitialized()
 
   try {
+    console.log("Tentative de création du match:", matchData)
     await createMatch(matchData)
     console.log("Match créé avec succès")
   } catch (error) {
@@ -105,9 +127,10 @@ export async function updateMatchScoresAction(
   matchId: number,
   sets: { set_number: number; player1_score: number; player2_score: number }[]
 ) {
-  console.log("Tentative de mise à jour du match:", matchId, sets)
+  await ensureDbInitialized()
 
   try {
+    console.log("Tentative de mise à jour du match:", matchId, sets)
     await updateMatchScores(matchId, sets)
     console.log("Match mis à jour avec succès")
   } catch (error) {
@@ -121,4 +144,19 @@ export async function updateMatchScoresAction(
   revalidatePath(`/matches/${matchId}`)
   revalidatePath("/")
   redirect("/matches")
+}
+
+// Action pour initialiser manuellement la DB
+export async function initializeDatabaseAction() {
+  try {
+    await initializeDatabase()
+    revalidatePath("/")
+    return { success: true, message: "Base de données initialisée avec succès" }
+  } catch (error) {
+    console.error("Erreur lors de l'initialisation:", error)
+    return {
+      success: false,
+      message: `Erreur: ${error instanceof Error ? error.message : "Erreur inconnue"}`,
+    }
+  }
 }

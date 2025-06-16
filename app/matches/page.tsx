@@ -3,7 +3,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Calendar, Clock, Trophy, Plus } from "lucide-react"
 import Link from "next/link"
-import { getMatches } from "@/lib/database-server"
+// Remplacer l'import
+import { getMatchesAction } from "@/lib/actions"
 
 function MatchCard({ match }: { match: any }) {
   const isCompleted = match.status === "completed"
@@ -66,7 +67,7 @@ function MatchCard({ match }: { match: any }) {
 }
 
 export default async function MatchesPage() {
-  const allMatches = await getMatches()
+  const allMatches = await getMatchesAction()
   const completedMatches = allMatches.filter((m) => m.status === "completed")
   const scheduledMatches = allMatches.filter((m) => m.status === "scheduled")
 

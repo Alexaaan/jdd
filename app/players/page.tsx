@@ -3,10 +3,11 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Users, Plus, Mail } from "lucide-react"
 import Link from "next/link"
-import { getPlayers } from "@/lib/database-server"
+// Remplacer l'import
+import { getPlayersAction } from "@/lib/actions"
 
 export default async function PlayersPage() {
-  const players = await getPlayers()
+  const players = await getPlayersAction()
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
